@@ -259,15 +259,15 @@ $("mSave").onclick=()=>{
 $("manBtn").onclick=()=>{handle($("man").value);$("man").value=""};
 $("man").onkeydown=e=>{if(e.key==="Enter")$("manBtn").click()};
 
-function toScan(){$("s3").scrollIntoView({behavior:"smooth",block:"start"})}
+function toScan(){document.body.style.paddingBottom="70vh";$("s3").scrollIntoView({block:"start"})}
 $("startBtn").onclick=async()=>{
  try{
-  if(scanner){await scanner.stop();scanner=null;$("startBtn").textContent="Spustit kameru";return}
+  if(scanner){await scanner.stop();scanner=null;document.body.style.paddingBottom="";$("startBtn").textContent="Spustit kameru";return}
   toScan();
   scanner=new Html5Qrcode("reader");
   await scanner.start({facingMode:"environment"},{fps:10,qrbox:{width:230,height:230}},t=>handle(t),()=>{});
   $("startBtn").textContent="Vypnout kameru";
-  setTimeout(toScan,350);
+  setTimeout(toScan,350);setTimeout(toScan,900);
  }catch(err){scanner=null;show("er","Kamera není dostupná ("+String(err&&err.name||err)+"). Použij ruční zadání.")}
 };
 
