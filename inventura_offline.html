@@ -25,6 +25,7 @@ textarea{min-height:110px}
 .wa{background:color-mix(in srgb,var(--wa) 15%,transparent);color:var(--wa)}
 .row{display:flex;gap:8px}.row>*{flex:1}
 button:disabled{opacity:.4}
+#s3{scroll-margin-top:8px}
 </style></head><body><main>
 <h1>Inventura – sken QR</h1>
 
@@ -258,12 +259,15 @@ $("mSave").onclick=()=>{
 $("manBtn").onclick=()=>{handle($("man").value);$("man").value=""};
 $("man").onkeydown=e=>{if(e.key==="Enter")$("manBtn").click()};
 
+function toScan(){$("s3").scrollIntoView({behavior:"smooth",block:"start"})}
 $("startBtn").onclick=async()=>{
  try{
   if(scanner){await scanner.stop();scanner=null;$("startBtn").textContent="Spustit kameru";return}
+  toScan();
   scanner=new Html5Qrcode("reader");
   await scanner.start({facingMode:"environment"},{fps:10,qrbox:{width:230,height:230}},t=>handle(t),()=>{});
   $("startBtn").textContent="Vypnout kameru";
+  setTimeout(toScan,350);
  }catch(err){scanner=null;show("er","Kamera není dostupná ("+String(err&&err.name||err)+"). Použij ruční zadání.")}
 };
 
